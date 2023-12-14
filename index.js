@@ -14,40 +14,61 @@ function getComputerChoice() {
   }
 }
 
-function playRound(playSelection, computerSelection) {
-  let statement = "";
+function playRound(playerSelection, computerSelection) {
+  let computerWins = 1;
+  let playerWins = 0;
+  let winner = 3;
   const playerSelectionCaseSensitive =
     playerSelection.charAt(0).toUpperCase() +
     playerSelection.toLowerCase().slice(1);
-  const youWinStatement = `You Win! ${playerSelectionCaseSensitive} beats ${computerSelection}`;
-  const youLoseStatement = `You Lose! ${computerSelection} beats ${playerSelectionCaseSensitive}`;
 
   if (playerSelectionCaseSensitive !== computerSelection) {
     if (playerSelectionCaseSensitive === rock) {
       if (computerSelection === paper) {
-        statement = youLoseStatement;
+        winner = computerWins;
       } else if (computerSelection === scissors) {
-        statement = youWinStatement;
+        winner = playerWins;
       }
     } else if (playerSelectionCaseSensitive === paper) {
       if (computerSelection === rock) {
-        statement = youWinStatement;
+        winner = playerWins;
       } else if (computerSelection === scissors) {
-        statement = youLoseStatement;
+        winner = computerWins;
       }
     } else if (playerSelectionCaseSensitive === scissors) {
       if (computerSelection === paper) {
-        statement = youLoseStatement;
+        winner = computerWins;
       } else if (computerSelection === rock) {
-        statement = youWinStatement;
+        winner = playerWins;
       }
     }
   } else {
-    statement = "It's a tie!";
+    winner = 2;
   }
-  return statement;
+  return winner;
 }
 
-const playerSelection = "Rock";
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
+function game() {
+  let computerWins = 0;
+  let playerWins = 0;
+  for (let index = 0; index < 5; index++) {
+    let playerSelection = prompt("Please enter your choice");
+    let computerSelection = getComputerChoice();
+    let result = playRound(playerSelection, computerSelection);
+
+    if (result === 0) {
+      playerWins += 1;
+      console.log(`You Win! ${playerSelection} beats ${computerSelection}`);
+    } else if (result === 1) {
+      computerWins += 1;
+      console.log(`You Lose! ${computerSelection} beats ${playerSelection}`);
+    } else {
+      console.log("It's a draw.");
+    }
+  }
+  computerWins > playerWins
+    ? console.log("Game over, you lose!")
+    : console.log("Game over, you win!");
+}
+
+game();
